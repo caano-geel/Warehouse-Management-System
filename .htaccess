@@ -1,0 +1,14 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /wms/
+
+    RewriteCond %{REQUEST_URI} ^/(application|system|vendor) [NC]
+    RewriteRule ^ - [F,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond $1 !^(index\.php|assets|editor|finder|templates|captcha|fonts|vendor)
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>

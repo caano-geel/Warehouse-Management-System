@@ -1,0 +1,10 @@
+# Database dumps
+DATABASE FILE/
+
+# Logs
+error_log
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store

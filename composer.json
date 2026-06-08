@@ -1,0 +1,22 @@
+{
+  "description": "Warehouse Management System on CodeIgniter 3",
+  "name": "legacy/wms-codeigniter3",
+  "type": "project",
+  "homepage": "https://codeigniter.com",
+  "license": "MIT",
+  "support": {
+    "forum": "http://forum.codeigniter.com/",
+    "wiki": "https://github.com/bcit-ci/CodeIgniter/wiki",
+    "irc": "irc://irc.freenode.net/codeigniter",
+    "source": "https://github.com/bcit-ci/CodeIgniter"
+  },
+  "require": {
+    "php": ">=7.4 <8.4",
+    "codeigniter/framework": "3.1.13",
+    "dompdf/dompdf": "^2.0",
+    "phpoffice/phpspreadsheet": "^1.29"
+  },
+  "suggest": {
+    "paragonie/random_compat": "Provides better randomness in PHP 5.x"
+  }
+}
