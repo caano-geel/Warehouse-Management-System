@@ -226,6 +226,8 @@ Software Developer | Computer Science Graduate
 
 GitHub:
 https://github.com/caano-geel
+Email:
+https://mail.google.com/abdullahiomarsalad@gmail.com
 
 ---
 
