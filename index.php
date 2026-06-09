@@ -53,7 +53,15 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	$app_environment = getenv('APP_ENV');
+	if ($app_environment === FALSE || $app_environment === '') {
+		$app_environment = getenv('CI_ENV');
+	}
+	if ($app_environment === FALSE || $app_environment === '') {
+		$app_environment = isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development';
+	}
+
+	define('ENVIRONMENT', $app_environment);
 
 /*
  *---------------------------------------------------------------
@@ -72,15 +80,8 @@ switch (ENVIRONMENT)
 
 	case 'testing':
 	case 'production':
+		error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE & ~E_WARNING);
 		ini_set('display_errors', 0);
-		if (version_compare(PHP_VERSION, '5.3', '>='))
-		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-		}
-		else
-		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
-		}
 	break;
 
 	default:
