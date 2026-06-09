@@ -23,7 +23,8 @@ RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoload
 
 COPY . .
 
-RUN chown -R www-data:www-data /var/www/html \
+RUN mkdir -p /var/www/html/application/logs \
+    && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod +x /var/www/html/docker/apache-render-entrypoint.sh
 

@@ -79,13 +79,13 @@ $db_name = getenv('DB_NAME') ?: 'wmsci';
 $db_user = getenv('DB_USER') ?: 'root';
 $db_pass = getenv('DB_PASS');
 $db_pass = ($db_pass !== FALSE) ? $db_pass : '';
-$db_hostname = $db_port !== '' ? $db_host.':'.$db_port : $db_host;
 $db_ssl = strtolower((string) getenv('DB_SSL')) === 'true';
 $db_encrypt = $db_ssl ? array('ssl_verify' => FALSE) : FALSE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => $db_hostname,
+	'hostname' => $db_host,
+	'port' => $db_port,
 	'username' => $db_user,
 	'password' => $db_pass,
 	'database' => $db_name,
