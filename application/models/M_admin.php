@@ -4,6 +4,22 @@ class M_admin extends CI_Model  {
     public function __construct(){
         parent::__construct();
     }
+	private function guard_query($query)
+	{
+		if ($query === FALSE) {
+			log_message('error', 'DB ERROR: ' . print_r($this->db->error(), true));
+			log_message('error', 'LAST QUERY: ' . $this->db->last_query());
+
+			if (defined('ENVIRONMENT') && ENVIRONMENT === 'production') {
+				@file_put_contents('php://stderr', 'DB ERROR: ' . print_r($this->db->error(), true) . PHP_EOL);
+				@file_put_contents('php://stderr', 'LAST QUERY: ' . $this->db->last_query() . PHP_EOL);
+			}
+
+			return FALSE;
+		}
+
+		return TRUE;
+	}
 
 	private function log_database_failure($context)
 	{
@@ -65,6 +81,9 @@ class M_admin extends CI_Model  {
 			$this->log_database_failure('identitaswebsite');
 			return $this->default_identitas();
 		}
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -85,6 +104,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -102,6 +124,9 @@ class M_admin extends CI_Model  {
 			}
 		}
         $Q=$this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+            return FALSE;
+        }
         $data = $Q->num_rows();
         return $data;
 	}
@@ -115,6 +140,9 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -142,6 +170,9 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -162,6 +193,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -179,6 +213,9 @@ class M_admin extends CI_Model  {
 			}
 		}
         $Q=$this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+            return FALSE;
+        }
         $data = $Q->num_rows();
         return $data;
 	}
@@ -202,6 +239,9 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -222,6 +262,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -239,6 +282,9 @@ class M_admin extends CI_Model  {
 			}
 		}
         $Q=$this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+            return FALSE;
+        }
         $data = $Q->num_rows();
         return $data;
 	}
@@ -263,6 +309,9 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -283,6 +332,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -300,6 +352,9 @@ class M_admin extends CI_Model  {
 			}
 		}
         $Q=$this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+            return FALSE;
+        }
         $data = $Q->num_rows();
         return $data;
 	}
@@ -324,6 +379,9 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -344,6 +402,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -361,6 +422,9 @@ class M_admin extends CI_Model  {
 			}
 		}
         $Q=$this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+            return FALSE;
+        }
         $data = $Q->num_rows();
         return $data;
 	}
@@ -385,6 +449,9 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -405,6 +472,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -422,6 +492,9 @@ class M_admin extends CI_Model  {
 			}
 		}
         $Q=$this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+            return FALSE;
+        }
         $data = $Q->num_rows();
         return $data;
 	}
@@ -447,6 +520,9 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -468,6 +544,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -488,6 +567,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -505,6 +587,9 @@ class M_admin extends CI_Model  {
 			}
 		}
         $Q=$this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+            return FALSE;
+        }
         $data = $Q->num_rows();
         return $data;
     }
@@ -529,6 +614,9 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($this->guard_query($Q) === FALSE) {
+			return FALSE;
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
@@ -549,6 +637,9 @@ class M_admin extends CI_Model  {
         $this->db->order_by($sidx,$sord);
         $this->db->limit($limit,$start);
         $Q = $this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+        	return FALSE;
+        }
         if ($Q->num_rows() > 0){
             $data=$Q->result();
         }
@@ -566,6 +657,9 @@ class M_admin extends CI_Model  {
 			}
 		}
         $Q=$this->db->get();
+        if ($this->guard_query($Q) === FALSE) {
+            return FALSE;
+        }
         $data = $Q->num_rows();
         return $data;
     }
