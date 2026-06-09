@@ -2,7 +2,6 @@ Options -Indexes
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /wms/
 
     RewriteCond %{REQUEST_URI} ^/(application|system|vendor) [NC]
     RewriteRule ^ - [F,L]

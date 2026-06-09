@@ -1,0 +1,14 @@
+.git
+.agents
+.codex
+screenshots
+error_log
+composer.phar
+.composer-cache
+vendor
+node_modules
+*.log
+*.zip
+*.rar
+*.7z
+DATABASE FILE
