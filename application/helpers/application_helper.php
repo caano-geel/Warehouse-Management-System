@@ -204,3 +204,10 @@ if ( ! function_exists('format_rupiah')) {
 		return 'Rp '.number_format((float) $value, 0, ',', '.');
 	}
 }
+
+if ( ! function_exists('format_ksh')) {
+	function format_ksh($value)
+	{
+		return 'KSh '.number_format((float) $value, 2, '.', ',');
+	}
+}

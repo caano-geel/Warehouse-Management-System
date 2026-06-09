@@ -12,6 +12,7 @@ class MY_Lang extends CI_Lang {
 		"admin",
 		"login",
 		"website",
+		"sales",
 		"pengaturan",
 		"assets",
 		"templates",

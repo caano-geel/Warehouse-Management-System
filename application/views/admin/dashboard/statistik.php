@@ -94,6 +94,48 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-3 col-sm-3 col-xs-6">
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3><?php echo format_ksh(isset($sales_dashboard['today_sales']) ? $sales_dashboard['today_sales'] : 0); ?></h3>
+                                <p>Today's Sales</p>
+                            </div>
+                            <div class="icon"><i class="fa fa-money"></i></div>
+                            <a href="<?php echo site_url();?>sales/report?range=daily" class="small-box-footer">View Sales Report <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-xs-6">
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3><?php echo format_ksh(isset($sales_dashboard['monthly_sales']) ? $sales_dashboard['monthly_sales'] : 0); ?></h3>
+                                <p>Monthly Sales</p>
+                            </div>
+                            <div class="icon"><i class="fa fa-line-chart"></i></div>
+                            <a href="<?php echo site_url();?>sales/report?range=monthly" class="small-box-footer">View Monthly Sales <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-xs-6">
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3><?php echo isset($sales_dashboard['total_invoices']) ? (int) $sales_dashboard['total_invoices'] : 0; ?></h3>
+                                <p>Total Invoices</p>
+                            </div>
+                            <div class="icon"><i class="fa fa-file-text-o"></i></div>
+                            <a href="<?php echo site_url();?>sales/records" class="small-box-footer">View Invoices <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-xs-6">
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3><?php echo isset($sales_dashboard['low_stock_items']) ? (int) $sales_dashboard['low_stock_items'] : 0; ?></h3>
+                                <p>Low Stock Items</p>
+                            </div>
+                            <div class="icon"><i class="fa fa-warning"></i></div>
+                            <a href="<?php echo site_url();?>website/barang" class="small-box-footer">View Goods <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

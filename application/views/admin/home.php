@@ -97,6 +97,39 @@
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/fonts/web-icons/web-icons.min.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/fonts/brand-icons/brand-icons.min.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/fonts/font-awesome/4.5.0/css/font-awesome.min.css">
+	<style>
+		.site-menubar {
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			height: 100vh;
+			overflow: hidden;
+		}
+		.site-menubar .site-menubar-body {
+			position: absolute;
+			top: 66px;
+			bottom: 60px;
+			left: 0;
+			right: 0;
+			overflow-y: auto;
+			overflow-x: hidden;
+			-webkit-overflow-scrolling: touch;
+		}
+		.site-menubar .site-menubar-footer {
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		.page {
+			min-height: calc(100vh - 66px);
+		}
+		@media (max-width: 767px) {
+			.site-menubar .site-menubar-body {
+				top: 60px;
+			}
+		}
+	</style>
 
 	<script src="<?php echo base_url();?>templates/backend/assets/libs/jquery/jquery.js"></script>
 	<!--[if lt IE 9]>
@@ -301,6 +334,57 @@
 									</a>
 								</li>
 								<?php } ?>
+							</ul>
+						</li>
+						<li class='site-menu-item has-sub'>
+							<a href='javascript:void(0)' class='animsition-link'>
+								<span class='site-menu-arrow'></span>
+								<i class='site-menu-icon fa fa fa-file-text-o'></i>
+								<span class='site-menu-title'>Sales &amp; Invoicing</span>
+							</a>
+							<ul class='site-menu-sub'>
+								<li class='site-menu-item'>
+									<a href='<?php echo site_url('sales/new_sale');?>' class='animsition-link'>
+										<i class='site-menu-icon fa fa-angle-right'></i>
+										<span class='site-menu-title'>New Sale</span>
+									</a>
+								</li>
+								<li class='site-menu-item'>
+									<a href='<?php echo site_url('sales/records');?>' class='animsition-link'>
+										<i class='site-menu-icon fa fa-angle-right'></i>
+										<span class='site-menu-title'>Sales Records</span>
+									</a>
+								</li>
+								<li class='site-menu-item'>
+									<a href='<?php echo site_url('sales/print_invoices');?>' class='animsition-link'>
+										<i class='site-menu-icon fa fa-angle-right'></i>
+										<span class='site-menu-title'>Print Invoices</span>
+									</a>
+								</li>
+								<li class='site-menu-item'>
+									<a href='<?php echo site_url('sales/report');?>' class='animsition-link'>
+										<i class='site-menu-icon fa fa-angle-right'></i>
+										<span class='site-menu-title'>Sales Report</span>
+									</a>
+								</li>
+								<li class='site-menu-item'>
+									<a href='<?php echo site_url('sales/discounts');?>' class='animsition-link'>
+										<i class='site-menu-icon fa fa-angle-right'></i>
+										<span class='site-menu-title'>Discounts</span>
+									</a>
+								</li>
+								<li class='site-menu-item'>
+									<a href='<?php echo site_url('sales/taxes');?>' class='animsition-link'>
+										<i class='site-menu-icon fa fa-angle-right'></i>
+										<span class='site-menu-title'>Tax Management</span>
+									</a>
+								</li>
+								<li class='site-menu-item'>
+									<a href='<?php echo site_url('sales/units');?>' class='animsition-link'>
+										<i class='site-menu-icon fa fa-angle-right'></i>
+										<span class='site-menu-title'>Unit Management</span>
+									</a>
+								</li>
 							</ul>
 						</li>
 						<?php if($admin->admin_level_kode === '1') {?>

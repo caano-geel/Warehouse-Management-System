@@ -7,6 +7,7 @@ class Admin extends CI_Controller {
 		parent::__construct();
 		$this->load->model('M_admin', 'ADM', TRUE);
 		$this->load->model('M_config', 'CONF', TRUE);
+		$this->load->model('M_sales', 'SALES', TRUE);
 	}
 	
 	public function index()
@@ -23,6 +24,7 @@ class Admin extends CI_Controller {
 			$where_keluar['status_pergerakan'] 	= 2;
 			$data['jml_data_transaksi_masuk']	= $this->ADM->count_all_transaksi($where_masuk, '');
 			$data['jml_data_transaksi_keluar']	= $this->ADM->count_all_transaksi($where_keluar, '');
+			$data['sales_dashboard']				= $this->SALES->dashboard_sales();
 			$data['menu_terpilih']			= '1';
 			$data['submenu_terpilih']		= '1';
 			$this->load->vars($data);
