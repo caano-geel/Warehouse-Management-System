@@ -74,14 +74,18 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db_host = getenv('DB_HOST') ?: 'localhost';
+$db_port = getenv('DB_PORT') ?: '';
 $db_name = getenv('DB_NAME') ?: 'wmsci';
 $db_user = getenv('DB_USER') ?: 'root';
 $db_pass = getenv('DB_PASS');
 $db_pass = ($db_pass !== FALSE) ? $db_pass : '';
+$db_hostname = $db_port !== '' ? $db_host.':'.$db_port : $db_host;
+$db_ssl = strtolower((string) getenv('DB_SSL')) === 'true';
+$db_encrypt = $db_ssl ? array('ssl_verify' => FALSE) : FALSE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => $db_host,
+	'hostname' => $db_hostname,
 	'username' => $db_user,
 	'password' => $db_pass,
 	'database' => $db_name,
@@ -94,7 +98,7 @@ $db['default'] = array(
 	'char_set' => 'utf8',
 	'dbcollat' => 'utf8_general_ci',
 	'swap_pre' => '',
-	'encrypt' => FALSE,
+	'encrypt' => $db_encrypt,
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
