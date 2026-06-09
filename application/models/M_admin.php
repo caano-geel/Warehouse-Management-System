@@ -4,6 +4,42 @@ class M_admin extends CI_Model  {
     public function __construct(){
         parent::__construct();
     }
+
+	private function log_database_failure($context)
+	{
+		$error = $this->db->error();
+		$message = $context.' database query failed';
+		if (!empty($error['code']) || !empty($error['message'])) {
+			$message .= ' ['.$error['code'].'] '.$error['message'];
+		}
+
+		log_message('error', $message);
+
+		if (defined('ENVIRONMENT') && ENVIRONMENT === 'production') {
+			@file_put_contents('php://stderr', $message.PHP_EOL);
+		}
+	}
+
+	private function default_identitas()
+	{
+		return (object) array(
+			'identitas_id' => 1,
+			'identitas_website' => 'Warehouse Management System',
+			'identitas_deskripsi' => 'Warehouse Management System',
+			'identitas_keyword' => 'Warehouse Management System',
+			'identitas_alamat' => '',
+			'identitas_notelp' => '',
+			'identitas_fb' => '',
+			'identitas_email' => '',
+			'identitas_tw' => '',
+			'identitas_gp' => '',
+			'identitas_yb' => '',
+			'identitas_favicon' => '',
+			'identitas_author' => 'Abdullahi Omar Salad',
+			'identitas_created' => date('Y-m-d H:i:s'),
+			'identitas_updated' => date('Y-m-d H:i:s'),
+		);
+	}
 	
 	//CONFIGURATION TABEL IDENTITAS
 	public function insert_identitas($data){
@@ -25,11 +61,15 @@ class M_admin extends CI_Model  {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($Q === FALSE) {
+			$this->log_database_failure('identitaswebsite');
+			return $this->default_identitas();
+		}
 		if ($Q->num_rows() > 0){
 			$data = $Q->row();
 		}
 		$Q->free_result();
-		return $data;
+		return $data ? $data : $this->default_identitas();
 	}
 
     public function grid_all_identitas($select, $sidx, $sord, $limit, $start, $where="", $like=""){
