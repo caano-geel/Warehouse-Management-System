@@ -12,9 +12,16 @@
 	<meta name="description" content="<?php echo $web->identitas_deskripsi;?>" />
 	<meta name="keywords" content="<?php echo $web->identitas_keyword;?>" />
 	<meta name="author" content="<?php echo $web->identitas_author;?>" />
+	<?php
+		$login_logo_file = !empty($web->identitas_favicon) ? $web->identitas_favicon : '3691adaa4a69024b73dc5c1ddb3c43ea.png';
+		if (!is_file(FCPATH.'assets/'.$login_logo_file)) {
+			$login_logo_file = '3691adaa4a69024b73dc5c1ddb3c43ea.png';
+		}
+		$login_logo_url = base_url().'assets/'.$login_logo_file;
+	?>
 
-	<link rel="apple-touch-icon" href="<?php echo base_url();?>assets/<?php echo $web->identitas_favicon;?>">
-	<link rel="shortcut icon" href="<?php echo base_url();?>assets/<?php echo $web->identitas_favicon;?>">
+	<link rel="apple-touch-icon" href="<?php echo $login_logo_url;?>">
+	<link rel="shortcut icon" href="<?php echo $login_logo_url;?>">
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/css/bootstrap/bootstrap.css">
@@ -27,7 +34,6 @@
 	<!-- Libs CSS -->
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/libs/animsition/animsition.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/libs/asscrollable/asScrollable.css">
-	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/libs/switchery/switchery.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/libs/intro-js/introjs.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/libs/slidepanel/slidePanel.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/libs/flag-icon-css/flag-icon.css">
@@ -64,7 +70,7 @@
 	<div class="page animsition vertical-align text-center" data-animsition-in="fade-in" data-animsition-out="fade-out">>
 		<div class="page-content vertical-align-middle">
 			<div class="brand">
-				<img class="brand-img" style="width: 120px;" src="<?php echo base_url();?>assets/<?php echo $web->identitas_favicon;?>" alt="...">
+				<img class="brand-img" style="width: 120px;" src="<?php echo $login_logo_url;?>" alt="Warehouse Management System">
 				<h2 class="brand-text">
 					<!-- <?php echo $web->identitas_website;?> -->
 					Warehouse Management System
