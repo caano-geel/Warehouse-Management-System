@@ -10,7 +10,7 @@ RUN apt-get update \
         libfreetype6-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install mysqli pdo pdo_mysql zip gd \
-    && a2enmod rewrite \
+    && a2enmod rewrite deflate expires headers \
     && echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
     && a2enconf servername \
     && sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf \

@@ -62,7 +62,7 @@
                         <div class="small-box dashboard-small-box bg-warning">
                             <div class="inner">
                                 <h3>
-                                    <?php $query = $this->db->query('SELECT * FROM supplier'); echo $query->num_rows();?>
+                                    <?php echo isset($jml_data_supplier) ? (int) $jml_data_supplier : 0;?>
                                 </h3>
                                 <p>Suppliers</p>
                             </div>
@@ -80,7 +80,7 @@
                         <div class="small-box dashboard-small-box bg-aqua">
                             <div class="inner">
                                 <h3>
-                                    <?php $query = $this->db->query('SELECT * FROM customer'); echo $query->num_rows();?>
+                                    <?php echo isset($jml_data_customer) ? (int) $jml_data_customer : 0;?>
                                 </h3>
                                 <p>Customers</p>
                             </div>

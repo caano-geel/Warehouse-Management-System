@@ -56,6 +56,21 @@ class M_admin extends CI_Model  {
 			'identitas_updated' => date('Y-m-d H:i:s'),
 		);
 	}
+
+	private function count_rows($table, $where = "", $like = "")
+	{
+		$this->db->from($table);
+		if ($where) {
+			$this->db->where($where);
+		}
+		if ($like) {
+			foreach ($like as $key => $value) {
+				$this->db->like($key, $value);
+			}
+		}
+
+		return (int) $this->db->count_all_results();
+	}
 	
 	//CONFIGURATION TABEL IDENTITAS
 	public function insert_identitas($data){
@@ -115,20 +130,7 @@ class M_admin extends CI_Model  {
     }
 
     public function count_all_identitas($where="", $like=""){
-        $this->db->select("*");
-        $this->db->from("identitas");
-		if ($where){$this->db->where($where);}
-		if ($like){
-			foreach($like as $key => $value){ 
-			$this->db->like($key, $value); 
-			}
-		}
-        $Q=$this->db->get();
-        if ($this->guard_query($Q) === FALSE) {
-            return FALSE;
-        }
-        $data = $Q->num_rows();
-        return $data;
+        return $this->count_rows("identitas", $where, $like);
 	}
 	
 		
@@ -204,20 +206,7 @@ class M_admin extends CI_Model  {
     }
 
     public function count_all_barang($where="", $like=""){
-        $this->db->select("*");
-        $this->db->from("master_barang");
-		if ($where){$this->db->where($where);}
-		if ($like){
-			foreach($like as $key => $value){ 
-			$this->db->like($key, $value); 
-			}
-		}
-        $Q=$this->db->get();
-        if ($this->guard_query($Q) === FALSE) {
-            return FALSE;
-        }
-        $data = $Q->num_rows();
-        return $data;
+        return $this->count_rows("master_barang", $where, $like);
 	}
 //CONFIGURATION TABEL LIMIT STOCK
 	public function insert_limitstock($data){
@@ -273,20 +262,7 @@ class M_admin extends CI_Model  {
     }
 
     public function count_all_limitstock($where="", $like=""){
-        $this->db->select("*");
-        $this->db->from("limitstock");
-		if ($where){$this->db->where($where);}
-		if ($like){
-			foreach($like as $key => $value){ 
-			$this->db->like($key, $value); 
-			}
-		}
-        $Q=$this->db->get();
-        if ($this->guard_query($Q) === FALSE) {
-            return FALSE;
-        }
-        $data = $Q->num_rows();
-        return $data;
+        return $this->count_rows("limitstock", $where, $like);
 	}
 
 	//CONFIGURATION TABEL SUPPLIER
@@ -343,20 +319,7 @@ class M_admin extends CI_Model  {
     }
 
     public function count_all_supplier($where="", $like=""){
-        $this->db->select("*");
-        $this->db->from("supplier");
-		if ($where){$this->db->where($where);}
-		if ($like){
-			foreach($like as $key => $value){ 
-			$this->db->like($key, $value); 
-			}
-		}
-        $Q=$this->db->get();
-        if ($this->guard_query($Q) === FALSE) {
-            return FALSE;
-        }
-        $data = $Q->num_rows();
-        return $data;
+        return $this->count_rows("supplier", $where, $like);
 	}
 
 	//CONFIGURATION TABEL CUSTOMER
@@ -413,20 +376,7 @@ class M_admin extends CI_Model  {
     }
 
     public function count_all_customer($where="", $like=""){
-        $this->db->select("*");
-        $this->db->from("customer");
-		if ($where){$this->db->where($where);}
-		if ($like){
-			foreach($like as $key => $value){ 
-			$this->db->like($key, $value); 
-			}
-		}
-        $Q=$this->db->get();
-        if ($this->guard_query($Q) === FALSE) {
-            return FALSE;
-        }
-        $data = $Q->num_rows();
-        return $data;
+        return $this->count_rows("customer", $where, $like);
 	}
 
 	//CONFIGURATION TABEL TRANSAKSI
@@ -483,20 +433,55 @@ class M_admin extends CI_Model  {
     }
 
     public function count_all_transaksi($where="", $like=""){
-        $this->db->select("*");
-        $this->db->from("transaksi_barang");
-		if ($where){$this->db->where($where);}
-		if ($like){
-			foreach($like as $key => $value){ 
-			$this->db->like($key, $value); 
+        return $this->count_rows("transaksi_barang", $where, $like);
+	}
+
+	public function dashboard_transaction_counts()
+	{
+		$counts = array(
+			'masuk' => 0,
+			'keluar' => 0,
+		);
+
+		$this->db->select('status_pergerakan, COUNT(*) AS total', FALSE);
+		$this->db->from('transaksi_barang');
+		$this->db->where_in('status_pergerakan', array(1, 2));
+		$this->db->group_by('status_pergerakan');
+		$query = $this->db->get();
+		if ($this->guard_query($query) === FALSE) {
+			return $counts;
+		}
+
+		foreach ($query->result() as $row) {
+			if ((string) $row->status_pergerakan === '1') {
+				$counts['masuk'] = (int) $row->total;
+			} elseif ((string) $row->status_pergerakan === '2') {
+				$counts['keluar'] = (int) $row->total;
 			}
 		}
-        $Q=$this->db->get();
-        if ($this->guard_query($Q) === FALSE) {
-            return FALSE;
-        }
-        $data = $Q->num_rows();
-        return $data;
+		$query->free_result();
+
+		return $counts;
+	}
+
+	public function dashboard_master_counts()
+	{
+		$query = $this->db->query(
+			'SELECT
+				(SELECT COUNT(*) FROM supplier) AS suppliers,
+				(SELECT COUNT(*) FROM customer) AS customers'
+		);
+		if ($query === FALSE) {
+			log_message('error', 'DB ERROR: ' . print_r($this->db->error(), true));
+			log_message('error', 'LAST QUERY: ' . $this->db->last_query());
+			return array('suppliers' => 0, 'customers' => 0);
+		}
+
+		$row = $query->row();
+		return array(
+			'suppliers' => $row ? (int) $row->suppliers : 0,
+			'customers' => $row ? (int) $row->customers : 0,
+		);
 	}
 	
 	//CONFIGURATION TABLE ADMIN
@@ -578,20 +563,7 @@ class M_admin extends CI_Model  {
     }
 
     public function count_all_admin($where="", $like=""){
-        $this->db->select("*");
-        $this->db->from("admin");		
-		if ($where){$this->db->where($where);}
-		if ($like){
-			foreach($like as $key => $value){ 
-			$this->db->like($key, $value); 
-			}
-		}
-        $Q=$this->db->get();
-        if ($this->guard_query($Q) === FALSE) {
-            return FALSE;
-        }
-        $data = $Q->num_rows();
-        return $data;
+        return $this->count_rows("admin", $where, $like);
     }
 	
 	//CONFIGURATION TABLE ADMIN LEVEL
@@ -648,20 +620,7 @@ class M_admin extends CI_Model  {
     }
 
     public function count_all_admin_level($where="", $like=""){
-        $this->db->select("*");
-        $this->db->from("admin_level");		
-		if ($where){$this->db->where($where);}
-		if ($like){
-			foreach($like as $key => $value){ 
-			$this->db->like($key, $value); 
-			}
-		}
-        $Q=$this->db->get();
-        if ($this->guard_query($Q) === FALSE) {
-            return FALSE;
-        }
-        $data = $Q->num_rows();
-        return $data;
+        return $this->count_rows("admin_level", $where, $like);
     }
 	
 	// CONFIGURATION COMBO BOX WITH DATABASE

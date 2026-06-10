@@ -20,10 +20,12 @@ class Admin extends CI_Controller {
 			$data['breadcrumb']				= 'Dashboard';
 			$data['dashboard']				= 'admin/dashboard/statistik';
 			$data['content']				= 'admin/dashboard/statistik';
-			$where_masuk['status_pergerakan'] 	= 1;
-			$where_keluar['status_pergerakan'] 	= 2;
-			$data['jml_data_transaksi_masuk']	= $this->ADM->count_all_transaksi($where_masuk, '');
-			$data['jml_data_transaksi_keluar']	= $this->ADM->count_all_transaksi($where_keluar, '');
+			$transaction_counts				= $this->ADM->dashboard_transaction_counts();
+			$master_counts					= $this->ADM->dashboard_master_counts();
+			$data['jml_data_transaksi_masuk']	= $transaction_counts['masuk'];
+			$data['jml_data_transaksi_keluar']	= $transaction_counts['keluar'];
+			$data['jml_data_supplier']			= $master_counts['suppliers'];
+			$data['jml_data_customer']			= $master_counts['customers'];
 			$data['sales_dashboard']				= $this->SALES->dashboard_sales();
 			$data['menu_terpilih']			= '1';
 			$data['submenu_terpilih']		= '1';

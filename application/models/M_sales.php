@@ -8,14 +8,30 @@ class M_sales extends CI_Model {
 		parent::__construct();
 	}
 
+	private function apply_date_range($column, $date_from = NULL, $date_to = NULL)
+	{
+		if (!empty($date_from)) {
+			$this->db->where($column.' >=', $date_from.' 00:00:00');
+		}
+		if (!empty($date_to)) {
+			$this->db->where($column.' <', date('Y-m-d', strtotime($date_to.' +1 day')).' 00:00:00');
+		}
+	}
+
 	public function get_customers()
 	{
-		return $this->db->order_by('nama_customer', 'ASC')->get('customer')->result();
+		return $this->db->select('id_customer, nama_customer, alamat_customer, notelp_customer')
+			->order_by('nama_customer', 'ASC')
+			->get('customer')
+			->result();
 	}
 
 	public function get_goods()
 	{
-		return $this->db->order_by('nama_barang', 'ASC')->get('master_barang')->result();
+		return $this->db->select('id_barang, nama_barang, merek, stock')
+			->order_by('nama_barang', 'ASC')
+			->get('master_barang')
+			->result();
 	}
 
 	public function get_units($active_only = TRUE)
@@ -157,13 +173,18 @@ class M_sales extends CI_Model {
 
 	public function count_sales($filters = array())
 	{
-		$this->sales_query($filters);
-		return $this->db->get()->num_rows();
+		$this->sales_query($filters, TRUE);
+		$row = $this->db->get()->row();
+		return $row ? (int) $row->total : 0;
 	}
 
-	private function sales_query($filters)
+	private function sales_query($filters, $count_only = FALSE)
 	{
-		$this->db->select('s.*, c.nama_customer, c.alamat_customer, c.notelp_customer, a.admin_nama');
+		if ($count_only) {
+			$this->db->select('COUNT(*) AS total', FALSE);
+		} else {
+			$this->db->select('s.*, c.nama_customer, c.alamat_customer, c.notelp_customer, a.admin_nama');
+		}
 		$this->db->from('sales s');
 		$this->db->join('customer c', 'c.id_customer = s.id_customer', 'left');
 		$this->db->join('admin a', 'a.admin_user = s.admin_user', 'left');
@@ -174,12 +195,7 @@ class M_sales extends CI_Model {
 		if (!empty($filters['customer'])) {
 			$this->db->like('c.nama_customer', $filters['customer']);
 		}
-		if (!empty($filters['date_from'])) {
-			$this->db->where('DATE(s.sale_date) >=', $filters['date_from']);
-		}
-		if (!empty($filters['date_to'])) {
-			$this->db->where('DATE(s.sale_date) <=', $filters['date_to']);
-		}
+		$this->apply_date_range('s.sale_date', isset($filters['date_from']) ? $filters['date_from'] : NULL, isset($filters['date_to']) ? $filters['date_to'] : NULL);
 	}
 
 	public function get_sale($sale_id)
@@ -237,8 +253,7 @@ class M_sales extends CI_Model {
 		$this->db->select('COALESCE(SUM(grand_total), 0) AS total_sales, COALESCE(SUM(tax_total), 0) AS total_tax, COALESCE(SUM(discount_total), 0) AS total_discounts, COUNT(*) AS total_invoices', FALSE);
 		$this->db->from('sales');
 		$this->db->where('status', 'active');
-		$this->db->where('DATE(sale_date) >=', $date_from);
-		$this->db->where('DATE(sale_date) <=', $date_to);
+		$this->apply_date_range('sale_date', $date_from, $date_to);
 
 		return $this->db->get()->row();
 	}
@@ -250,8 +265,7 @@ class M_sales extends CI_Model {
 		$this->db->join('sales s', 's.sale_id = si.sale_id', 'inner');
 		$this->db->join('master_barang mb', 'mb.id_barang = si.id_barang', 'left');
 		$this->db->where('s.status', 'active');
-		$this->db->where('DATE(s.sale_date) >=', $date_from);
-		$this->db->where('DATE(s.sale_date) <=', $date_to);
+		$this->apply_date_range('s.sale_date', $date_from, $date_to);
 		$this->db->group_by('si.id_barang');
 		$this->db->order_by('quantity_sold', 'DESC');
 		$this->db->limit(10);
@@ -265,8 +279,7 @@ class M_sales extends CI_Model {
 		$this->db->from('sales s');
 		$this->db->join('customer c', 'c.id_customer = s.id_customer', 'left');
 		$this->db->where('s.status', 'active');
-		$this->db->where('DATE(s.sale_date) >=', $date_from);
-		$this->db->where('DATE(s.sale_date) <=', $date_to);
+		$this->apply_date_range('s.sale_date', $date_from, $date_to);
 		$this->db->group_by('s.id_customer');
 		$this->db->order_by('total_sales', 'DESC');
 		$this->db->limit(10);
@@ -285,12 +298,20 @@ class M_sales extends CI_Model {
 			);
 		}
 
-		$today = date('Y-m-d');
-		$month_start = date('Y-m-01');
-		$month_end = date('Y-m-t');
+		$today_start = date('Y-m-d').' 00:00:00';
+		$tomorrow_start = date('Y-m-d', strtotime('+1 day')).' 00:00:00';
+		$month_start = date('Y-m-01').' 00:00:00';
+		$next_month_start = date('Y-m-d', strtotime(date('Y-m-01').' +1 month')).' 00:00:00';
 
-		$today_summary = $this->report_summary($today, $today);
-		$month_summary = $this->report_summary($month_start, $month_end);
+		$this->db->select(
+			'COALESCE(SUM(CASE WHEN sale_date >= '.$this->db->escape($today_start).' AND sale_date < '.$this->db->escape($tomorrow_start).' THEN grand_total ELSE 0 END), 0) AS today_sales,
+			COALESCE(SUM(CASE WHEN sale_date >= '.$this->db->escape($month_start).' AND sale_date < '.$this->db->escape($next_month_start).' THEN grand_total ELSE 0 END), 0) AS monthly_sales',
+			FALSE
+		);
+		$this->db->from('sales');
+		$this->db->where('status', 'active');
+		$summary = $this->db->get()->row();
+
 		$low_stock_limit = 2;
 		$limit = $this->db->get('limitstock')->row();
 		if ($limit) {
@@ -300,8 +321,8 @@ class M_sales extends CI_Model {
 		$low_stock = $this->db->where('stock <=', $low_stock_limit)->count_all_results('master_barang');
 
 		return array(
-			'today_sales' => $today_summary ? (float) $today_summary->total_sales : 0,
-			'monthly_sales' => $month_summary ? (float) $month_summary->total_sales : 0,
+			'today_sales' => $summary ? (float) $summary->today_sales : 0,
+			'monthly_sales' => $summary ? (float) $summary->monthly_sales : 0,
 			'total_invoices' => $this->db->where('status', 'issued')->count_all_results('invoices'),
 			'low_stock_items' => $low_stock,
 		);
