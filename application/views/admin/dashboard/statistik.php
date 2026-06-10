@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="row dashboard-card-row">
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 dashboard-card-col">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 dashboard-card-col">
                         <div class="small-box dashboard-small-box bg-green">
                             <div class="inner">
                                 <h3>
@@ -40,7 +40,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 dashboard-card-col">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 dashboard-card-col">
                         <div class="small-box dashboard-small-box bg-red">
                             <div class="inner">
                                 <h3>
@@ -58,7 +58,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 dashboard-card-col">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 dashboard-card-col">
                         <div class="small-box dashboard-small-box bg-warning">
                             <div class="inner">
                                 <h3>
@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 dashboard-card-col">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 dashboard-card-col">
                         <div class="small-box dashboard-small-box bg-aqua">
                             <div class="inner">
                                 <h3>
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="row dashboard-card-row">
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 dashboard-card-col">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 dashboard-card-col">
                         <div class="small-box dashboard-small-box dashboard-money-card bg-green">
                             <div class="inner">
                                 <h3><?php echo format_ksh(isset($sales_dashboard['today_sales']) ? $sales_dashboard['today_sales'] : 0); ?></h3>
@@ -105,7 +105,7 @@
                             <a href="<?php echo site_url();?>sales/report?range=daily" class="small-box-footer">View Sales Report <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 dashboard-card-col">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 dashboard-card-col">
                         <div class="small-box dashboard-small-box dashboard-money-card bg-aqua">
                             <div class="inner">
                                 <h3><?php echo format_ksh(isset($sales_dashboard['monthly_sales']) ? $sales_dashboard['monthly_sales'] : 0); ?></h3>
@@ -115,7 +115,7 @@
                             <a href="<?php echo site_url();?>sales/report?range=monthly" class="small-box-footer">View Monthly Sales <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 dashboard-card-col">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 dashboard-card-col">
                         <div class="small-box dashboard-small-box bg-warning">
                             <div class="inner">
                                 <h3><?php echo isset($sales_dashboard['total_invoices']) ? (int) $sales_dashboard['total_invoices'] : 0; ?></h3>
@@ -125,7 +125,7 @@
                             <a href="<?php echo site_url();?>sales/records" class="small-box-footer">View Invoices <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 dashboard-card-col">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 dashboard-card-col">
                         <div class="small-box dashboard-small-box bg-red">
                             <div class="inner">
                                 <h3><?php echo isset($sales_dashboard['low_stock_items']) ? (int) $sales_dashboard['low_stock_items'] : 0; ?></h3>

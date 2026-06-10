@@ -46,6 +46,39 @@
 
 	<!-- Page -->
 	<link rel="stylesheet" href="<?php echo base_url();?>templates/backend/assets/css/login.css">
+	<style>
+		.login-submit {
+			position: relative;
+			min-height: 44px;
+			transition: opacity .2s ease, background-color .2s ease;
+		}
+		.login-submit .login-spinner {
+			display: none;
+			width: 16px;
+			height: 16px;
+			margin-right: 8px;
+			border: 2px solid rgba(255, 255, 255, .45);
+			border-top-color: #fff;
+			border-radius: 50%;
+			vertical-align: -3px;
+			animation: loginSpin .75s linear infinite;
+		}
+		.login-submit.is-loading .login-spinner {
+			display: inline-block;
+		}
+		.login-submit.is-loading {
+			cursor: wait;
+			opacity: .9;
+		}
+		.login-processing {
+			opacity: .72;
+			pointer-events: none;
+			transition: opacity .2s ease;
+		}
+		@keyframes loginSpin {
+			to { transform: rotate(360deg); }
+		}
+	</style>
 
 	<!--[if lt IE 9]>
     <script src="<?php echo base_url();?>templates/backend/assets/libs/html5shiv/html5shiv.min.js"></script>
@@ -77,7 +110,7 @@
 				</h2>
 			</div>
 
-			<form method="post" action="<?php echo site_url();?>login/ceklogin" name="formLogin" id="form" parsley-validate novalidate>
+			<form method="post" action="<?php echo site_url();?>login/ceklogin" name="formLogin" id="form" class="login-form" parsley-validate novalidate>
 				<!-- ========== Flashdata ========== -->
 				<center>
 				<?php if ($this->session->flashdata('success') || $this->session->flashdata('warning') || $this->session->flashdata('error')) { ?>
@@ -113,7 +146,12 @@
 				</div>
 				
 				
-				<div class="signup"><button type="submit" class="btn btn-success" name="masuk">Login</button></div>
+				<div class="signup">
+					<button type="submit" class="btn btn-success login-submit" name="masuk" id="loginButton" autocomplete="off" aria-live="polite">
+						<span class="login-spinner" aria-hidden="true"></span>
+						<span class="login-button-text">Login</span>
+					</button>
+				</div>
 			</form>
 			<footer class="page-copyright">
 				<p>Developed by
@@ -159,6 +197,41 @@
 			var Site = window.Site;
 			$(document).ready(function () {
 				Site.run();
+			});
+
+			$('#form').on('submit', function () {
+				var $form = $(this);
+				var $button = $('#loginButton');
+
+				if ($button.data('loading')) {
+					return false;
+				}
+
+				if (this.checkValidity && !this.checkValidity()) {
+					if (this.reportValidity) {
+						this.reportValidity();
+					}
+					return false;
+				}
+
+				$button.data('loading', true)
+					.addClass('is-loading')
+					.prop('disabled', true)
+					.attr('aria-busy', 'true');
+				$button.find('.login-button-text').text('Signing In...');
+				$form.addClass('login-processing');
+
+				return true;
+			});
+
+			$(window).on('pageshow', function () {
+				var $button = $('#loginButton');
+				$button.data('loading', false)
+					.removeClass('is-loading')
+					.prop('disabled', false)
+					.removeAttr('aria-busy');
+				$button.find('.login-button-text').text('Login');
+				$('#form').removeClass('login-processing');
 			});
 		})(document, window, jQuery);
 	</script>

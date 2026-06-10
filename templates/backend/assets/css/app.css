@@ -595,41 +595,48 @@ a.btn-delete {
 }
 
 .dashboard-card-row {
-  margin-left: -10px;
-  margin-right: -10px;
+  margin-left: -8px;
+  margin-right: -8px;
 }
 
 .dashboard-card-col {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .dashboard-small-box {
   width: 100%;
-  min-height: 145px;
+  min-height: 128px;
   overflow: hidden;
   margin-top: 0;
+  margin-bottom: 18px;
 }
 
 .dashboard-small-box > .inner {
-  min-height: 112px;
-  padding-right: 72px;
+  min-height: 94px;
+  padding: 10px 66px 8px 10px;
+  overflow: hidden;
 }
 
 .dashboard-small-box h3 {
   max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   word-break: normal;
-  line-height: 1.15;
+  line-height: 1.1;
+  margin-bottom: 6px;
 }
 
 .dashboard-money-card h3 {
-  font-size: 30px;
+  font-size: clamp(20px, 2.1vw, 28px);
 }
 
 .dashboard-small-box p {
   margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dashboard-small-box .icon {
@@ -641,61 +648,76 @@ a.btn-delete {
 
 @media screen and (min-width: 1200px) {
   .dashboard-small-box h3 {
-    font-size: 34px;
+    font-size: 32px;
   }
 
   .dashboard-money-card h3 {
-    font-size: 28px;
+    font-size: clamp(22px, 1.8vw, 28px);
   }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1199px) {
   .dashboard-small-box {
-    min-height: 140px;
+    min-height: 124px;
   }
 
   .dashboard-small-box h3 {
-    font-size: 32px;
+    font-size: 28px;
   }
 
   .dashboard-money-card h3 {
-    font-size: 28px;
+    font-size: clamp(20px, 2.4vw, 26px);
   }
 }
 
 @media screen and (max-width: 767px) {
-  .dashboard-card-col {
-    clear: both;
-  }
-
   .dashboard-small-box {
-    min-height: 132px;
-    margin-bottom: 18px;
+    min-height: 104px;
+    margin-bottom: 14px;
   }
 
   .dashboard-small-box > .inner {
-    min-height: 100px;
-    padding-right: 20px;
+    min-height: 76px;
+    padding: 8px 10px 6px 10px;
   }
 
   .dashboard-small-box h3,
   .dashboard-money-card h3 {
-    font-size: 25px;
+    font-size: clamp(17px, 5vw, 22px);
+  }
+
+  .dashboard-small-box p {
+    font-size: 12px;
   }
 
   .dashboard-small-box .icon {
     display: none;
+  }
+
+  .dashboard-small-box > .small-box-footer {
+    font-size: 11px;
+    line-height: 1.25;
+    padding: 4px 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
 @media screen and (max-width: 420px) {
   .dashboard-small-box h3,
   .dashboard-money-card h3 {
-    font-size: 22px;
+    font-size: clamp(15px, 4.6vw, 19px);
   }
 
   .dashboard-small-box > .small-box-footer {
-    font-size: 12px;
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 359px) {
+  .dashboard-card-col {
+    width: 100%;
   }
 }
 
