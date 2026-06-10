@@ -12,6 +12,18 @@ class M_login extends CI_Model {
 		$this->db->where($where);
 		$this->db->limit(1);
 		$Q = $this->db->get();
+		if ($Q === FALSE) {
+			$error = $this->db->error();
+			$message = 'cek_login database query failed';
+			if (!empty($error['code']) || !empty($error['message'])) {
+				$message .= ' ['.$error['code'].'] '.$error['message'];
+			}
+			log_message('error', $message);
+			if (defined('ENVIRONMENT') && ENVIRONMENT === 'production') {
+				@file_put_contents('php://stderr', $message.PHP_EOL);
+			}
+			return false;
+		}
 		if ($Q->num_rows() > 0) {
 			$data = $Q->row();
 			$this->set_session($data);

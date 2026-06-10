@@ -81,6 +81,7 @@ $db_pass = getenv('DB_PASS');
 $db_pass = ($db_pass !== FALSE) ? $db_pass : '';
 $db_ssl = strtolower((string) getenv('DB_SSL')) === 'true';
 $db_encrypt = $db_ssl ? array('ssl_verify' => FALSE) : FALSE;
+$db_stricton = $db_ssl ? NULL : FALSE;
 
 $db['default'] = array(
 	'dsn'	=> '',
@@ -100,7 +101,7 @@ $db['default'] = array(
 	'swap_pre' => '',
 	'encrypt' => $db_encrypt,
 	'compress' => FALSE,
-	'stricton' => FALSE,
+	'stricton' => $db_stricton,
 	'failover' => array(),
 	'save_queries' => TRUE
 );
